@@ -6,17 +6,24 @@
         xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
         xmlns:local="clr-namespace:D3Demo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="1000">
+        Title="MainWindow" Height="800" Width="1000" WindowState="Maximized">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <!--<RowDefinition/>-->
-        </Grid.RowDefinitions>
-        
-        <d3:Chart x:Name="Chart1" Loaded="Chart1_Loaded">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <d3:Chart Grid.Column="1" x:Name="Chart2">
+            <Grid>
+                <d3:Plot x:Name="Plot2">
+                    
+                </d3:Plot>
+            </Grid>
+        </d3:Chart>
+        <!--<d3:Chart Grid.Column="2" x:Name="Chart1" Loaded="Chart1_Loaded">
             <Grid>
                 <d3:Plot x:Name="Plot1" MouseMove="Plot1_MouseMove">
-                    <!--<Line d3:Plot.X1="1" d3:Plot.Y1="1" d3:Plot.X2="3" d3:Plot.Y2="5" StrokeThickness="3"></Line> -->
+                    --><!--<Line d3:Plot.X1="1" d3:Plot.Y1="1" d3:Plot.X2="3" d3:Plot.Y2="5" StrokeThickness="3"></Line>--> 
                     <!--d3:Plot.X2="3" d3:Plot.Y2="5"-->
                     <!--
                 <TextBlock d3:Plot.X1="1" d3:Plot.Y1="2">hello world</TextBlock>-->
@@ -33,12 +40,12 @@
                     <!--<Polygon Stroke="Red" d3:Plot.Points="-0.8,0.5,-0.3,0.5,-0.3,0.1,-0.8,0.1"></Polygon>-->
                     <!--<TextBlock d3:Plot.X1="-0.8" d3:Plot.Y1="0.5">20103</TextBlock>-->
                     <!--<Ellipse d3:Plot.X1="1" d3:Plot.Y1="1" d3:Plot.X2="2" d3:Plot.Y2="2" Stroke="Gold" StrokeThickness="2"/>
-                <Polyline d3:Plot.Points="0.3,0.5,0.8,0.5,0.8,1.0,0.3,1.0,0.3,0.5" Stroke="Blue" StrokeThickness="2"/>-->
+                <Polyline d3:Plot.Points="0.3,0.5,0.8,0.5,0.8,1.0,0.3,1.0,0.3,0.5" Stroke="Blue" StrokeThickness="2"/>--><!--
                     <d3:MouseNavigation Height="{Binding ElementName=Plot1,Path=ActualHeight}" Width="{Binding ElementName=Plot1, Path=ActualWidth}" x:Name="mouse"/>
-                    <TextBlock x:Name="coordinateTB" FontSize="20">1,1</TextBlock>
+                    <TextBlock x:Name="coordinateTB" FontSize="20">0,0</TextBlock>
 
 
-                    <!--<Grid>
+                    --><!--<Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
@@ -46,9 +53,10 @@
                     <TextBlock x:Name="coordinateTB" FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Right">1,1</TextBlock>
                     <d3:MouseNavigation Background="#4CA52A2A" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     <Button Grid.Row="1" HorizontalAlignment="Stretch" Width="Auto">2222</Button>
-                </Grid>-->
+                </Grid>--><!--
                 </d3:Plot>
             </Grid>
-        </d3:Chart>
+        </d3:Chart>-->
+        <local:RealVisualMap Grid.Column="2" x:Name="RealVisualMap1"></local:RealVisualMap>
     </Grid>
 </Window>

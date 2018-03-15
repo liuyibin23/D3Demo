@@ -25,34 +25,65 @@ namespace D3Demo
         {
             InitializeComponent();
 
-            //0
-            DrawArea(Brushes.Red, new Point(14190.491, 6742.325), new Point(14183.954, 6743.655), new Point(14184.054, 6744.145), new Point(14190.591, 6742.815));
-            //1
-            DrawArea(Brushes.Blue, new Point(14184.054, 6744.145), new Point(14186.744, 6757.991), new Point(14193.375, 6756.815), new Point(14190.591, 6742.815));
-            //2
-            DrawArea(Brushes.Red, new Point(14186.744, 6757.991), new Point(14186.866, 6758.680), new Point(14193.497, 6757.504), new Point(14193.375, 6756.815));
-            //3
-            DrawArea(Brushes.Blue, new Point(14191.617, 6747.879), new Point(14192.077, 6750.163), new Point(14197.146, 6749.081), new Point(14196.705, 6746.835));
+            //DrawArea(Figure1, Brushes.Blue, new Point(14184.054, 6744.145), new Point(14186.744, 6757.991), new Point(14193.375, 6756.815), new Point(14190.591, 6742.815));
+            //DrawArea(Figure1, Brushes.Blue, new Point(14191.617, 6747.879), new Point(14192.077, 6750.163), new Point(14197.146, 6749.081), new Point(14196.705, 6746.835));
+            //Figure1.PlotOriginX = 14180;
+            //Figure1.PlotOriginY = 6740;
+            //Figure1.PlotHeight = 25;
+            //Figure1.PlotWidth = this.Width / this.Height * 25;
 
+            Chart2.IsVerticalNavigationEnabled = false;
+            Chart2.IsHorizontalNavigationEnabled = false;
 
+            DrawArea(Plot2, Brushes.Blue, new Point(-7.85, 6.7), new Point(7.85, 6.7), new Point(7.85, 0), new Point(-7.85, 0));
+            DrawArea(Plot2, Brushes.Blue, new Point(-1.15, 0), new Point(1.15, 0), new Point(1.15, -5.2), new Point(-1.15, -5.2));
 
-            Chart1.PlotOriginX = 14180;
-            Chart1.PlotOriginY = 6740;
-            double height = 20;
-            Chart1.PlotHeight = height;
-            Chart1.PlotWidth = this.Width / this.Height * height;
-            Chart1.SizeChanged += Chart1_SizeChanged;
+            Chart2.PlotOriginX = -8;
+            Chart2.PlotOriginY = -8;
+            double height2 = 22;
+            Chart2.PlotHeight = height2;
+            Chart2.PlotWidth = this.Width / this.Height * height2;
+            Chart2.SizeChanged += Chart_SizeChanged;
+
+            ////0
+            //DrawArea(Plot1,Brushes.Red, new Point(14190.491, 6742.325), new Point(14183.954, 6743.655), new Point(14184.054, 6744.145), new Point(14190.591, 6742.815));
+            ////1
+            //DrawArea(Plot1,Brushes.Blue, new Point(14184.054, 6744.145), new Point(14186.744, 6757.991), new Point(14193.375, 6756.815), new Point(14190.591, 6742.815));
+            ////2
+            //DrawArea(Plot1,Brushes.Red, new Point(14186.744, 6757.991), new Point(14186.866, 6758.680), new Point(14193.497, 6757.504), new Point(14193.375, 6756.815));
+            ////3
+            //DrawArea(Plot1,Brushes.Blue, new Point(14191.617, 6747.879), new Point(14192.077, 6750.163), new Point(14197.146, 6749.081), new Point(14196.705, 6746.835));
+
+//            DrawMapPoints(Plot1, new Point(14184.054, 6744.145), new Point(14186.744, 6757.991), new Point(14193.375, 6756.815), new Point(14190.591, 6742.815));
+//            DrawMapPoints(Plot1,new Point(14191.617, 6747.879), new Point(14192.077, 6750.163), new Point(14197.146, 6749.081), new Point(14196.705, 6746.835));
+//
+//            Chart1.PlotOriginX = 14180;
+//            Chart1.PlotOriginY = 6740;
+//            double height = 25;
+//            Chart1.PlotHeight = height;
+//            Chart1.PlotWidth = this.Width / this.Height * height;
+//            Chart1.SizeChanged += Chart_SizeChanged;
 
             //Plot1.Children.OfType<MouseNavigation>().ToList()[0]
             //mouse.MouseMove += Mouse_MouseMove;
+
+            RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
+            RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
+            RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
+            RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
+            RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
+            RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
+            RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
+            RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
         }
 
-        private void Chart1_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Chart_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Chart1.PlotWidth = e.NewSize.Width / e.NewSize.Height * Chart1.PlotHeight;
+            var chart = sender as Chart;
+            chart.PlotWidth = e.NewSize.Width / e.NewSize.Height * chart.PlotHeight;
         }
 
-        private void DrawArea(Brush color,params Point[] points)
+        private void DrawArea(PlotBase canva, Brush color,params Point[] points)
         {
             Polygon polygon = new Polygon();
             PointCollection pc = new PointCollection();
@@ -73,19 +104,31 @@ namespace D3Demo
             
 
             Plot.SetPoints(polygon, pc);
-            Plot1.Children.Add(polygon);
-            DrawMapPoints(points);
+            canva.Children.Add(polygon);
+            DrawMapPoints(canva,points);
         }
 
-        private void DrawMapPoints(IEnumerable<Point> points)
+        private void DrawMapPoints(PlotBase canva, params Point[] points)
         {
             double pointR = 15;
             foreach (var p in points)
             {
                 MapPoint mp = new MapPoint(p.X, p.Y, pointR);
-                Plot1.Children.Add(mp.Shape);
+                canva.Children.Add(mp.Shape);
             }
         }
+
+//        private void DrawMapPoints(PlotBase canva,IEnumerable<Point> points)
+//        {
+//            double pointR = 15;
+//            foreach (var p in points)
+//            {
+//                MapPoint mp = new MapPoint(p.X, p.Y, pointR);
+//                canva.Children.Add(mp.Shape);
+//            }
+//        }
+
+        
 
         private void Chart1_Loaded(object sender, RoutedEventArgs e)
         {
@@ -97,11 +140,11 @@ namespace D3Demo
 
         private void Plot1_MouseMove(object sender, MouseEventArgs e)
         {
-            var p = e.GetPosition(sender as IInputElement);
-            var x = Plot1.XFromLeft(p.X);
-            var y = Plot1.YFromTop(p.Y);
-            coordinateTB.Text = $"{x},{y}";
-            Console.WriteLine($"{x},{y}");
+            //var p = e.GetPosition(sender as IInputElement);
+            //var x = Plot1.XFromLeft(p.X);
+            //var y = Plot1.YFromTop(p.Y);
+            //coordinateTB.Text = $"{x},{y}";
+            //Console.WriteLine($"{x},{y}");
         }
 
         //private void MouseNavigation_MouseMove(object sender, MouseEventArgs e)
