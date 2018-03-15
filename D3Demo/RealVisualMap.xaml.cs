@@ -23,11 +23,13 @@ namespace D3Demo
     public partial class RealVisualMap : UserControl
     {
         public ObservableCollection<Point> OriginalPoints = new ObservableCollection<Point>();
+        private PlaceXmlModel.Item examItem;
         private Point defualtCenterPoint = new Point();
         double _minX = double.MaxValue;
         double _maxX = double.MinValue;
         double _minY = double.MaxValue;
         double _maxY = double.MinValue;
+
         public RealVisualMap()
         {
             InitializeComponent();
@@ -35,6 +37,15 @@ namespace D3Demo
             Plot1.MouseMove += Plot1OnMouseMove;
             Chart1.SizeChanged += Chart1_SizeChanged;
             FitPlot();
+        }
+
+        public void GenerateItem(IExamItemGenerator itemGenerator)
+        {
+            examItem = itemGenerator.Generate(OriginalPoints);
+            foreach (var area in examItem.SubAreas.Areas)
+            {
+                DrawArea(Plot1,Brushes.Blue, ConvertPointsCollection(area.Points));              
+            }
         }
 
         private void Chart1_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -102,6 +113,18 @@ namespace D3Demo
             Chart1.PlotWidth = this.Width / this.Height * height;           
         }
 
+        private Point[] ConvertPointsCollection(IEnumerable<PlaceXmlModel.Point> Placepoints)
+        {
+            Point[] points = new Point[Placepoints.Count()];
+            int i = 0;
+            foreach (var p in Placepoints)
+            {
+                points[i] = new Point(double.Parse(p.X), double.Parse(p.Y));
+                i++;
+            }
+            return points;
+        }
+
         private void DrawArea(PlotBase canva, Brush color, params Point[] points)
         {
             Polygon polygon = new Polygon();
@@ -123,7 +146,7 @@ namespace D3Demo
 
             Plot.SetPoints(polygon, pc);
             canva.Children.Add(polygon);
-            DrawMapPoints(canva, points);
+            //DrawMapPoints(canva, points);
         }
 
         private void DrawMapPoints(PlotBase canva, params Point[] points)

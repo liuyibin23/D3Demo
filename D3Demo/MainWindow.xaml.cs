@@ -45,6 +45,13 @@ namespace D3Demo
             Chart2.PlotWidth = this.Width / this.Height * height2;
             Chart2.SizeChanged += Chart_SizeChanged;
 
+            //TextBlock text = new TextBlock();
+            //text.Text = "1";
+            //text.FontSize = 20;
+            //Plot.SetX1(text,-7.85);
+            //Plot.SetY1(text, 6.7);
+            //Plot2.Children.Add(text);
+
             ////0
             //DrawArea(Plot1,Brushes.Red, new Point(14190.491, 6742.325), new Point(14183.954, 6743.655), new Point(14184.054, 6744.145), new Point(14190.591, 6742.815));
             ////1
@@ -54,27 +61,42 @@ namespace D3Demo
             ////3
             //DrawArea(Plot1,Brushes.Blue, new Point(14191.617, 6747.879), new Point(14192.077, 6750.163), new Point(14197.146, 6749.081), new Point(14196.705, 6746.835));
 
-//            DrawMapPoints(Plot1, new Point(14184.054, 6744.145), new Point(14186.744, 6757.991), new Point(14193.375, 6756.815), new Point(14190.591, 6742.815));
-//            DrawMapPoints(Plot1,new Point(14191.617, 6747.879), new Point(14192.077, 6750.163), new Point(14197.146, 6749.081), new Point(14196.705, 6746.835));
-//
-//            Chart1.PlotOriginX = 14180;
-//            Chart1.PlotOriginY = 6740;
-//            double height = 25;
-//            Chart1.PlotHeight = height;
-//            Chart1.PlotWidth = this.Width / this.Height * height;
-//            Chart1.SizeChanged += Chart_SizeChanged;
+            //            DrawMapPoints(Plot1, new Point(14184.054, 6744.145), new Point(14186.744, 6757.991), new Point(14193.375, 6756.815), new Point(14190.591, 6742.815));
+            //            DrawMapPoints(Plot1,new Point(14191.617, 6747.879), new Point(14192.077, 6750.163), new Point(14197.146, 6749.081), new Point(14196.705, 6746.835));
+            //
+            //            Chart1.PlotOriginX = 14180;
+            //            Chart1.PlotOriginY = 6740;
+            //            double height = 25;
+            //            Chart1.PlotHeight = height;
+            //            Chart1.PlotWidth = this.Width / this.Height * height;
+            //            Chart1.SizeChanged += Chart_SizeChanged;
 
             //Plot1.Children.OfType<MouseNavigation>().ToList()[0]
             //mouse.MouseMove += Mouse_MouseMove;
 
+
             RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
             RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
             RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
-            RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
-            RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
             RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
             RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
             RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
+            RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
+            RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
+
+
+            RealVisualMap1.GenerateItem(new DKExamItemGenerator());
+            
+
+
+            //RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
         }
 
         private void Chart_SizeChanged(object sender, SizeChangedEventArgs e)

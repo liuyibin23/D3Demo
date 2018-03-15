@@ -76,6 +76,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DKExamItemGenerator.cs" />
+    <Compile Include="IExamItemGenerator.cs" />
+    <Compile Include="MathEx.cs" />
+    <Compile Include="PlaceXmlModel.cs" />
     <Compile Include="RealVisualMap.xaml.cs">
       <DependentUpon>RealVisualMap.xaml</DependentUpon>
     </Compile>

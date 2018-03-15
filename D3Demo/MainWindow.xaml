@@ -16,7 +16,7 @@
         <d3:Chart Grid.Column="1" x:Name="Chart2">
             <Grid>
                 <d3:Plot x:Name="Plot2">
-                    
+                    <!--<TextBlock d3:Plot.X1="-7.85" d3:Plot.Y1 ="6.7">ssssss</TextBlock>-->
                 </d3:Plot>
             </Grid>
         </d3:Chart>
