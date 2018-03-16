@@ -58,7 +58,7 @@ namespace D3Demo
             map.Items.Add(examItem);
             map.Name = "科二地图";
             map.Point0 = "0,0";
-            string path = System.AppDomain.CurrentDomain.BaseDirectory+"DKPlace.xml";
+            string path = System.AppDomain.CurrentDomain.BaseDirectory+"Place.xml";
             using (FileStream fs = File.Open(path,FileMode.Create,FileAccess.ReadWrite))
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(PlaceXmlModel));

@@ -211,8 +211,8 @@ namespace D3Demo
                 //        RealVisualMap1.Plot1.Children.Remove(i);
                 //    }
                 //}
-                RealVisualMap1.Plot1.Children.RemoveRange(1, count);
-                    using (StreamReader sr = new StreamReader(path))
+                RealVisualMap1.Plot1.Children.RemoveRange(2, count);
+                using (StreamReader sr = new StreamReader(path))
                 {
                     string str;
                     while ((str = sr.ReadLine()) != null)
@@ -222,24 +222,27 @@ namespace D3Demo
                         string x = coordinateStrs[0].Split('=')[1];
                         string y = coordinateStrs[1].Split('=')[1];
                         y = y.Substring(0, y.Length - 1);
-                        originPoints.Add(new Point(double.Parse(x),double.Parse(y)));
+                        originPoints.Add(new Point(double.Parse(x), double.Parse(y)));
                         RealVisualMap1.OriginalPoints.Add(originPoints.Last());
-                    }                    
+                    }
                 }
                 RealVisualMap1.AdjustAxis();
             }
         }
 
-        private void Btn_GeneratDK_OnClick(object sender, RoutedEventArgs e)
+        private void Btn_Generat_OnClick(object sender, RoutedEventArgs e)
         {
-            if (RealVisualMap1.OriginalPoints.Count != 8)
+
+            var generator = (sender as Button).Tag as IExamItemGenerator;
+            
+            if (!generator.CheckPointCount(RealVisualMap1.OriginalPoints.Count))
             {
                 MessageBox.Show("原始点数量不对！");
                 return;
             }
-            RealVisualMap1.GenerateItem(new DKExamItemGenerator());
+            RealVisualMap1.GenerateItem(generator);
             RealVisualMap1.ExportMap();
-            MessageBox.Show("生成的地图文件在程序根目录下，目前还需要手动修改项目Flag,区域Flag,和开始区域！");
+            MessageBox.Show("生成的地图文件保存在程序根目录下，目前还需要手动修改项目Flag,区域Flag,和开始区域！目前一次只能生成一个项目，生成当前项目会覆盖上一个项目，请及时另存为当前生成项目文件。");
         }
     }
 }

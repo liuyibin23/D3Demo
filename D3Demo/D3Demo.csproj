@@ -81,6 +81,7 @@
     <Compile Include="IExamItemGenerator.cs" />
     <Compile Include="MathEx.cs" />
     <Compile Include="PlaceXmlModel.cs" />
+    <Compile Include="QXExamItemGenerator.cs" />
     <Compile Include="RealVisualMap.xaml.cs">
       <DependentUpon>RealVisualMap.xaml</DependentUpon>
     </Compile>

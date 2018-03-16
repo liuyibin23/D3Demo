@@ -26,14 +26,19 @@ namespace D3Demo
         /// </summary>
         private List<Point> area7AboveOffsetPoints;
 
+        public bool CheckPointCount(int count)
+        {
+            return count == 8;
+        }
+
         public PlaceXmlModel.Item Generate(IEnumerable<Point> originalPoints)
         {
-            if (originalPoints.Count() != 8) return null;
+            if (!CheckPointCount(originalPoints.Count())) return null;
             PlaceXmlModel.Item examItem = new PlaceXmlModel.Item();
             examItem.SubAreas = new PlaceXmlModel.SunArea();
             examItem.SubAreas.Areas = new List<PlaceXmlModel.Area>();
 
-            double offsetDis = 0.3;
+            double offsetDis = 0.3;//4,5,6号区偏移距离
             area456belowOffsetPoints = MathEx.TranslatePoints(new List<Point> { originalPoints.ElementAt(2), originalPoints.ElementAt(3),
             originalPoints.ElementAt(4), originalPoints.ElementAt(5),originalPoints.ElementAt(6), originalPoints.ElementAt(7),}, offsetDis);
 
@@ -65,7 +70,7 @@ namespace D3Demo
         /// <returns></returns>
         private PlaceXmlModel.Area GenerateArea0(IEnumerable<Point> originalPoints)
         {
-            double offsetDis = 2;
+            double offsetDis = 2;//0号区偏移距离
             List<Point> offsetPoints = MathEx.TranslatePoints(new List<Point> { originalPoints.ElementAt(7),originalPoints.ElementAt(0)}, offsetDis);
             area0LeftOffetPoints = offsetPoints;
             PlaceXmlModel.Area area = new PlaceXmlModel.Area();
@@ -106,7 +111,7 @@ namespace D3Demo
         /// <returns></returns>
         private PlaceXmlModel.Area GenerateArea2(IEnumerable<Point> originalPoints)
         {
-            double offsetDis = 2;
+            double offsetDis = 2;//2号区偏移距离
             List<Point> offsetPoints = MathEx.TranslatePoints(new List<Point> { originalPoints.ElementAt(1), originalPoints.ElementAt(2) }, offsetDis);
             area2RightOffetPoints = offsetPoints;
             PlaceXmlModel.Area area = new PlaceXmlModel.Area();
@@ -209,7 +214,7 @@ namespace D3Demo
         /// <returns></returns>
         private PlaceXmlModel.Area GenerateArea7(IEnumerable<Point> originalPoints)
         {
-            double offsetDis = 0.3;
+            double offsetDis = 0.3;//7号区偏移距离
             List<Point> offsetPoints = MathEx.TranslatePoints(new List<Point> { originalPoints.ElementAt(0), originalPoints.ElementAt(1) }, offsetDis);
             area7AboveOffsetPoints = offsetPoints;
             PlaceXmlModel.Area area = new PlaceXmlModel.Area();
