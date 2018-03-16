@@ -145,8 +145,8 @@ namespace D3Demo
         public static double NorthAngle(Point s, Point e)
         {
             Point o = new Point(0,0);
-            Point p1 = new Point(0,10000);
-            Point p2 = new Point(e.X - s.X,e.Y - s.Y);
+            Point p2 = new Point(0,10000);
+            Point p1 = new Point(e.X - s.X,e.Y - s.Y);
             return Angle(o,p1,p2);
         }
 

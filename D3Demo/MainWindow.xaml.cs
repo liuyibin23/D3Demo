@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using InteractiveDataDisplay.WPF;
+using Microsoft.Win32;
 
 namespace D3Demo
 {
@@ -32,18 +34,18 @@ namespace D3Demo
             //Figure1.PlotHeight = 25;
             //Figure1.PlotWidth = this.Width / this.Height * 25;
 
-            Chart2.IsVerticalNavigationEnabled = false;
-            Chart2.IsHorizontalNavigationEnabled = false;
-
-            DrawArea(Plot2, Brushes.Blue, new Point(-7.85, 6.7), new Point(7.85, 6.7), new Point(7.85, 0), new Point(-7.85, 0));
-            DrawArea(Plot2, Brushes.Blue, new Point(-1.15, 0), new Point(1.15, 0), new Point(1.15, -5.2), new Point(-1.15, -5.2));
-
-            Chart2.PlotOriginX = -8;
-            Chart2.PlotOriginY = -8;
-            double height2 = 22;
-            Chart2.PlotHeight = height2;
-            Chart2.PlotWidth = this.Width / this.Height * height2;
-            Chart2.SizeChanged += Chart_SizeChanged;
+//            Chart2.IsVerticalNavigationEnabled = false;
+//            Chart2.IsHorizontalNavigationEnabled = false;
+//
+//            DrawArea(Plot2, Brushes.Blue, new Point(-7.85, 6.7), new Point(7.85, 6.7), new Point(7.85, 0), new Point(-7.85, 0));
+//            DrawArea(Plot2, Brushes.Blue, new Point(-1.15, 0), new Point(1.15, 0), new Point(1.15, -5.2), new Point(-1.15, -5.2));
+//
+//            Chart2.PlotOriginX = -8;
+//            Chart2.PlotOriginY = -8;
+//            double height2 = 22;
+//            Chart2.PlotHeight = height2;
+//            Chart2.PlotWidth = this.Width / this.Height * height2;
+//            Chart2.SizeChanged += Chart_SizeChanged;
 
             //TextBlock text = new TextBlock();
             //text.Text = "1";
@@ -75,17 +77,17 @@ namespace D3Demo
             //mouse.MouseMove += Mouse_MouseMove;
 
 
-            RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
-            RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
-            RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
-            RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
-            RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
-            RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
-            RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
-            RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
-
-
-            RealVisualMap1.GenerateItem(new DKExamItemGenerator());
+//            RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
+//            RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
+//            RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
+//            RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
+//            RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
+//            RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
+//            RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
+//            RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
+//
+//
+//            RealVisualMap1.GenerateItem(new DKExamItemGenerator());
             
 
 
@@ -173,5 +175,42 @@ namespace D3Demo
         //{
 
         //}
+        private string _pointPath;
+        private void Btn_LoadPoint_OnClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            var r = ofd.ShowDialog();
+            if (r != null && r == true)
+            {
+                _pointPath = ofd.FileName;
+                LoadPoint(_pointPath);
+            }
+        }
+
+        private List<Point> originPoints = new List<Point>();
+
+        private void LoadPoint(string path)
+        {
+            if (File.Exists(path))
+            {
+                originPoints.Clear();
+                RealVisualMap1.OriginalPoints.Clear();
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    string str;
+                    while ((str = sr.ReadLine()) != null)
+                    {
+                        string coordinateStr = str.Split(' ')[2];
+                        string[] coordinateStrs = coordinateStr.Split(',');
+                        string x = coordinateStrs[0].Split('=')[1];
+                        string y = coordinateStrs[1].Split('=')[1];
+                        y = y.Substring(0, y.Length - 1);
+                        originPoints.Add(new Point(double.Parse(x),double.Parse(y)));
+                        RealVisualMap1.OriginalPoints.Add(originPoints.Last());
+                    }                    
+                }
+                RealVisualMap1.AdjustAxis();
+            }
+        }
     }
 }

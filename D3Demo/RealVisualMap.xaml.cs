@@ -48,6 +48,12 @@ namespace D3Demo
             }
         }
 
+        public void AdjustAxis()
+        {
+//            FitPlot();
+            Chart1.PlotWidth = Chart1.Width / Chart1.Height * Chart1.PlotHeight;
+        }
+
         private void Chart1_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var chart = sender as Chart;
@@ -64,8 +70,11 @@ namespace D3Demo
 
         private void OriginalPoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            FitPlot((Point)e.NewItems[0]);
-            DrawMapPoints(Plot1,(Point)e.NewItems[0]);
+            if (e.NewItems != null)
+            {
+                FitPlot((Point)e.NewItems[0]);
+                DrawMapPoints(Plot1, (Point)e.NewItems[0]);
+            }           
         }
 
         private void FitPlot(Point newPoint)

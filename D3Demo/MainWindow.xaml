@@ -13,13 +13,16 @@
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <d3:Chart Grid.Column="1" x:Name="Chart2">
-            <Grid>
-                <d3:Plot x:Name="Plot2">
-                    <!--<TextBlock d3:Plot.X1="-7.85" d3:Plot.Y1 ="6.7">ssssss</TextBlock>-->
-                </d3:Plot>
-            </Grid>
-        </d3:Chart>
+        <StackPanel>
+            <Button x:Name="btn_LoadPoint" Height="30" Width="100" Margin="20" Click="Btn_LoadPoint_OnClick">加载点</Button>
+        </StackPanel>
+<!--        <d3:Chart Grid.Column="1" x:Name="Chart2">-->
+<!--            <Grid>-->
+<!--                <d3:Plot x:Name="Plot2">-->
+<!--                    ~1~<TextBlock d3:Plot.X1="-7.85" d3:Plot.Y1 ="6.7">ssssss</TextBlock>@1@-->
+<!--                </d3:Plot>-->
+<!--            </Grid>-->
+<!--        </d3:Chart>-->
         <!--<d3:Chart Grid.Column="2" x:Name="Chart1" Loaded="Chart1_Loaded">
             <Grid>
                 <d3:Plot x:Name="Plot1" MouseMove="Plot1_MouseMove">
@@ -57,6 +60,7 @@
                 </d3:Plot>
             </Grid>
         </d3:Chart>-->
-        <local:RealVisualMap Grid.Column="2" x:Name="RealVisualMap1"></local:RealVisualMap>
+        <local:RealVisualMap Grid.Column="1" Grid.ColumnSpan="2" x:Name="RealVisualMap1"></local:RealVisualMap>
     </Grid>
 </Window>
+
