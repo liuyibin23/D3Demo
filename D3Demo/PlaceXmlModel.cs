@@ -45,13 +45,14 @@ namespace D3Demo
             [XmlAttribute("StartMode")]
             public string StartMode { get; set; }
 
-            [XmlAttribute("Area")]
+            [XmlElement("Area")]
             //[XmlIgnore]
             public Area Area { get; set; }
 
-            //[XmlAttribute("SubAreas")]
-            [XmlIgnore]
+            [XmlElement("SubAreas")]
+            //[XmlIgnore]
             public SunArea SubAreas { get; set; }
+
         }
 
         public class SunArea
@@ -60,16 +61,18 @@ namespace D3Demo
             public List<Area> Areas { get; set; }
         }
 
-        
         public class Area
         {
             [XmlAttribute("Flag")]
+            //[XmlIgnore]
             public string Flag { get; set; }
 
             [XmlAttribute("Note")]
+            //[XmlIgnore]
             public string Note { get; set; }
 
             [XmlElement("Point")]
+            //[XmlIgnore]
             public List<Point> Points { get; set; }
         }
 

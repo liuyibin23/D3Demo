@@ -255,6 +255,8 @@ namespace D3Demo
 
         private void AddPoint2Area(PlaceXmlModel.Area area,Point p)
         {
+            p.X = Math.Round(p.X,3);
+            p.Y = Math.Round(p.Y,3);
             area.Points.Add(new PlaceXmlModel.Point(p.X, p.Y));
         }
     }

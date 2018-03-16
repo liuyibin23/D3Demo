@@ -78,14 +78,14 @@ namespace D3Demo
             //mouse.MouseMove += Mouse_MouseMove;
 
 
-            //RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
-            //RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
-            //RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
-            //RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
-            //RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
-            //RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
-            //RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
-            //RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
+            RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
+            RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
+            RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
+            RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
+            RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
+            RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
+            RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
+            RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
 
             //
             //            RealVisualMap1.GenerateItem(new DKExamItemGenerator());
@@ -235,10 +235,11 @@ namespace D3Demo
             if (RealVisualMap1.OriginalPoints.Count != 8)
             {
                 MessageBox.Show("原始点数量不对！");
+                return;
             }
             RealVisualMap1.GenerateItem(new DKExamItemGenerator());
-//            RealVisualMap1.ExportMap();
-            MessageBox.Show("这个功能目前只能看一看，没有卵用！");
+            RealVisualMap1.ExportMap();
+            MessageBox.Show("生成的地图文件在程序根目录下，目前还需要手动修改项目Flag,区域Flag,和开始区域！");
         }
     }
 }
