@@ -51,7 +51,7 @@ namespace D3Demo
         public void AdjustAxis()
         {
 //            FitPlot();
-            Chart1.PlotWidth = Chart1.Width / Chart1.Height * Chart1.PlotHeight;
+            Chart1.PlotWidth = Chart1.ActualWidth / Chart1.ActualHeight * Chart1.PlotHeight;
         }
 
         private void Chart1_SizeChanged(object sender, SizeChangedEventArgs e)
