@@ -78,14 +78,14 @@ namespace D3Demo
             //mouse.MouseMove += Mouse_MouseMove;
 
 
-            RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
-            RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
-            RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
-            RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
-            RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
-            RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
-            RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
-            RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
 
             //
             //            RealVisualMap1.GenerateItem(new DKExamItemGenerator());

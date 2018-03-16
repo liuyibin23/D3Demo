@@ -187,10 +187,20 @@ namespace D3Demo
         private void DrawMapPoints(PlotBase canva, params Point[] points)
         {
             double pointR = 15;
+            int i = 1;
+            int count = points.Length;
             foreach (var p in points)
             {
                 MapPoint mp = new MapPoint(p.X, p.Y, pointR);
                 canva.Children.Add(mp.Shape);
+
+                TextBlock num = new TextBlock();
+                num.FontSize = 20;
+                num.Text = (OriginalPoints.Count - count + i).ToString();
+                i++;
+                Plot.SetX1(num,p.X);
+                Plot.SetY1(num,p.Y);
+                canva.Children.Add(num);
             }
         }
     }
