@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
+using System.Xml.Serialization;
 using InteractiveDataDisplay.WPF;
 
 namespace D3Demo
@@ -46,6 +49,29 @@ namespace D3Demo
             {
                 DrawArea(Plot1,Brushes.Blue, ConvertPointsCollection(area.Points));              
             }
+        }
+
+        public void ExportMap()
+        {
+            PlaceXmlModel map = new PlaceXmlModel();
+            map.Items = new List<PlaceXmlModel.Item>();
+            map.Items.Add(examItem);
+            map.Name = "科二地图";
+            map.Point0 = "0,0";
+            string path = System.AppDomain.CurrentDomain.BaseDirectory+"t.xml";
+            using (FileStream fs = File.Open(path,FileMode.Create,FileAccess.ReadWrite))
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(PlaceXmlModel));
+                XmlTextWriter textWriter = new XmlTextWriter(fs,Encoding.UTF8);
+                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                ns.Add("","");
+                // 换行
+                textWriter.Formatting = Formatting.Indented;
+                // 序列化
+                xmlSerializer.Serialize(textWriter, map, ns);
+                textWriter.Close();
+            }
+
         }
 
         public void AdjustAxis()

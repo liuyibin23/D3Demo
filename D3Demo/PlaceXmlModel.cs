@@ -39,13 +39,18 @@ namespace D3Demo
             [XmlAttribute("HaveSensor")]
             public string HaveSensor { get; set; }
 
+            [XmlAttribute("StartArea")]
+            public string StartArea { get; set; }
+
             [XmlAttribute("StartMode")]
             public string StartMode { get; set; }
 
             [XmlAttribute("Area")]
+            //[XmlIgnore]
             public Area Area { get; set; }
 
-            [XmlAttribute("SubAreas")]
+            //[XmlAttribute("SubAreas")]
+            [XmlIgnore]
             public SunArea SubAreas { get; set; }
         }
 
@@ -55,6 +60,7 @@ namespace D3Demo
             public List<Area> Areas { get; set; }
         }
 
+        
         public class Area
         {
             [XmlAttribute("Flag")]

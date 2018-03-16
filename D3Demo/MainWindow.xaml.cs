@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,18 +35,18 @@ namespace D3Demo
             //Figure1.PlotHeight = 25;
             //Figure1.PlotWidth = this.Width / this.Height * 25;
 
-//            Chart2.IsVerticalNavigationEnabled = false;
-//            Chart2.IsHorizontalNavigationEnabled = false;
-//
-//            DrawArea(Plot2, Brushes.Blue, new Point(-7.85, 6.7), new Point(7.85, 6.7), new Point(7.85, 0), new Point(-7.85, 0));
-//            DrawArea(Plot2, Brushes.Blue, new Point(-1.15, 0), new Point(1.15, 0), new Point(1.15, -5.2), new Point(-1.15, -5.2));
-//
-//            Chart2.PlotOriginX = -8;
-//            Chart2.PlotOriginY = -8;
-//            double height2 = 22;
-//            Chart2.PlotHeight = height2;
-//            Chart2.PlotWidth = this.Width / this.Height * height2;
-//            Chart2.SizeChanged += Chart_SizeChanged;
+            //            Chart2.IsVerticalNavigationEnabled = false;
+            //            Chart2.IsHorizontalNavigationEnabled = false;
+            //
+            //            DrawArea(Plot2, Brushes.Blue, new Point(-7.85, 6.7), new Point(7.85, 6.7), new Point(7.85, 0), new Point(-7.85, 0));
+            //            DrawArea(Plot2, Brushes.Blue, new Point(-1.15, 0), new Point(1.15, 0), new Point(1.15, -5.2), new Point(-1.15, -5.2));
+            //
+            //            Chart2.PlotOriginX = -8;
+            //            Chart2.PlotOriginY = -8;
+            //            double height2 = 22;
+            //            Chart2.PlotHeight = height2;
+            //            Chart2.PlotWidth = this.Width / this.Height * height2;
+            //            Chart2.SizeChanged += Chart_SizeChanged;
 
             //TextBlock text = new TextBlock();
             //text.Text = "1";
@@ -77,18 +78,18 @@ namespace D3Demo
             //mouse.MouseMove += Mouse_MouseMove;
 
 
-//            RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
-//            RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
-//            RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
-//            RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
-//            RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
-//            RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
-//            RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
-//            RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
-//
-//
-//            RealVisualMap1.GenerateItem(new DKExamItemGenerator());
-            
+            //RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14186.744, 6757.991));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14193.375, 6756.815));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14192.077, 6750.163));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14197.146, 6749.081));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14196.705, 6746.835));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14191.617, 6747.879));
+            //RealVisualMap1.OriginalPoints.Add(new Point(14190.591, 6742.815));
+
+            //
+            //            RealVisualMap1.GenerateItem(new DKExamItemGenerator());
+
 
 
             //RealVisualMap1.OriginalPoints.Add(new Point(14184.054, 6744.145));
@@ -195,7 +196,23 @@ namespace D3Demo
             {
                 originPoints.Clear();
                 RealVisualMap1.OriginalPoints.Clear();
-                using (StreamReader sr = new StreamReader(path))
+                //                var es = RealVisualMap1.Plot1.Children.OfType<Ellipse>();
+                //
+                //                RealVisualMap1.Plot1.Children.RemoveRange(0,1);
+                //                foreach (var ellipse in es)
+                //                {
+                //                    RealVisualMap1.Plot1.Children.Remove(ellipse);
+                //                }
+                int count = RealVisualMap1.Plot1.Children.Count;
+                //for (int i = 0 ;i < count; i++)
+                //{
+                //    if (RealVisualMap1.Plot1.Children[i] is Ellipse)
+                //    {
+                //        RealVisualMap1.Plot1.Children.Remove(i);
+                //    }
+                //}
+                RealVisualMap1.Plot1.Children.RemoveRange(1, count);
+                    using (StreamReader sr = new StreamReader(path))
                 {
                     string str;
                     while ((str = sr.ReadLine()) != null)
@@ -211,6 +228,17 @@ namespace D3Demo
                 }
                 RealVisualMap1.AdjustAxis();
             }
+        }
+
+        private void Btn_GeneratDK_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (RealVisualMap1.OriginalPoints.Count != 8)
+            {
+                MessageBox.Show("原始点数量不对！");
+            }
+            RealVisualMap1.GenerateItem(new DKExamItemGenerator());
+//            RealVisualMap1.ExportMap();
+            MessageBox.Show("这个功能目前只能看一看，没有卵用！");
         }
     }
 }
