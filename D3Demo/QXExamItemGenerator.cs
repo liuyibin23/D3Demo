@@ -55,7 +55,7 @@ namespace D3Demo
             examItem.SubAreas.Areas.Add(GenerateArea2(originalPoints));
             examItem.SubAreas.Areas.Add(GenerateArea3(originalPoints));
             examItem.SubAreas.Areas.Add(GenerateArea4(originalPoints));
-            examItem.SubAreas.Areas.Add(GenerateMainArea());
+            examItem.Area = GenerateMainArea();
 
             examItem.Name = "曲线行驶";
             examItem.Flag = "20601";
