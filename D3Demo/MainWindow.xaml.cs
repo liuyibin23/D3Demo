@@ -108,40 +108,40 @@ namespace D3Demo
             chart.PlotWidth = e.NewSize.Width / e.NewSize.Height * chart.PlotHeight;
         }
 
-        private void DrawArea(PlotBase canva, Brush color,params Point[] points)
-        {
-            Polygon polygon = new Polygon();
-            PointCollection pc = new PointCollection();
-            List<MapPoint> mps = new List<MapPoint>();
-            double pointR = 15;
+        //private void DrawArea(PlotBase canva, Brush color,params Point[] points)
+        //{
+        //    Polygon polygon = new Polygon();
+        //    PointCollection pc = new PointCollection();
+        //    List<MapPoint> mps = new List<MapPoint>();
+        //    double pointR = 15;
             
-            foreach (var p in points)
-            {
-                pc.Add(p);
-                //mps.Add(new MapPoint(p.X, p.Y, pointR));
-                //MapPoint mp = new MapPoint(p.X,p.Y, pointR);
-                //Plot1.Children.Add(mp.Shape);
-            }
+        //    foreach (var p in points)
+        //    {
+        //        pc.Add(p);
+        //        //mps.Add(new MapPoint(p.X, p.Y, pointR));
+        //        //MapPoint mp = new MapPoint(p.X,p.Y, pointR);
+        //        //Plot1.Children.Add(mp.Shape);
+        //    }
 
-            polygon.Stroke = color;
-            polygon.StrokeThickness = 2;
+        //    polygon.Stroke = color;
+        //    polygon.StrokeThickness = 2;
 
             
 
-            Plot.SetPoints(polygon, pc);
-            canva.Children.Add(polygon);
-            DrawMapPoints(canva,points);
-        }
+        //    Plot.SetPoints(polygon, pc);
+        //    canva.Children.Add(polygon);
+        //    DrawMapPoints(canva,points);
+        //}
 
-        private void DrawMapPoints(PlotBase canva, params Point[] points)
-        {
-            double pointR = 15;
-            foreach (var p in points)
-            {
-                MapPoint mp = new MapPoint(p.X, p.Y, pointR);
-                canva.Children.Add(mp.Shape);
-            }
-        }
+        //private void DrawMapPoints(PlotBase canva, params Point[] points)
+        //{
+        //    double pointR = 15;
+        //    foreach (var p in points)
+        //    {
+        //        MapPoint mp = new MapPoint(p.X, p.Y, pointR);
+        //        canva.Children.Add(mp.Shape);
+        //    }
+        //}
 
 //        private void DrawMapPoints(PlotBase canva,IEnumerable<Point> points)
 //        {
@@ -195,23 +195,7 @@ namespace D3Demo
             if (File.Exists(path))
             {
                 originPoints.Clear();
-                RealVisualMap1.OriginalPoints.Clear();
-                //                var es = RealVisualMap1.Plot1.Children.OfType<Ellipse>();
-                //
-                //                RealVisualMap1.Plot1.Children.RemoveRange(0,1);
-                //                foreach (var ellipse in es)
-                //                {
-                //                    RealVisualMap1.Plot1.Children.Remove(ellipse);
-                //                }
-                int count = RealVisualMap1.Plot1.Children.Count;
-                //for (int i = 0 ;i < count; i++)
-                //{
-                //    if (RealVisualMap1.Plot1.Children[i] is Ellipse)
-                //    {
-                //        RealVisualMap1.Plot1.Children.Remove(i);
-                //    }
-                //}
-                RealVisualMap1.Plot1.Children.RemoveRange(2, count);
+                RealVisualMap1.RemoveAllPointFromPlot();
                 using (StreamReader sr = new StreamReader(path))
                 {
                     string str;
@@ -223,7 +207,7 @@ namespace D3Demo
                         string y = coordinateStrs[1].Split('=')[1];
                         y = y.Substring(0, y.Length - 1);
                         originPoints.Add(new Point(double.Parse(x), double.Parse(y)));
-                        RealVisualMap1.OriginalPoints.Add(originPoints.Last());
+                        RealVisualMap1.OriginalPoints.Add(new MapPoint(originPoints.Last().X, originPoints.Last().Y));
                     }
                 }
                 RealVisualMap1.AdjustAxis();

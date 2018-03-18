@@ -18,6 +18,10 @@ namespace D3Demo
         /// 地图点形状
         /// </summary>
         public Ellipse Shape { get; private set; } = new Ellipse();
+        /// <summary>
+        /// 点序号
+        /// </summary>
+        public TextBlock IndexTb { get; set; } = new TextBlock { FontSize = 20 };
         //半径
         public double R
         {
@@ -50,16 +54,33 @@ namespace D3Demo
             }
         }
 
+        public MapPoint(double x, double y):this(x, y, 15)
+        {
+            
+        }
+
         public MapPoint(double x, double y, double r)
         {
             _r = r;
             Shape.Height = _r;
             Shape.Width = _r;
+            Shape.Tag = $"{x},{y}";
             SetXY(x,y);
             Shape.Fill = _color;
             Shape.Stroke = _color;
             Shape.MouseEnter += Shape_MouseEnter;
+            //Shape.MouseDown += Shape_MouseDown;
         }
+
+        public Action<System.Windows.Input.MouseButtonEventArgs> PointMouseDownAction;
+
+        //private void Shape_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        //{
+        //    if (PointMouseDownAction != null)
+        //    {
+        //        PointMouseDownAction(e);
+        //    }
+        //}
 
         private void Shape_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -84,6 +105,5 @@ namespace D3Demo
             t.Y = -_r / 2;
             Shape.RenderTransform = t;
         }
-
     }
 }

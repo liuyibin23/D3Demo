@@ -25,7 +25,7 @@ namespace D3Demo
     /// </summary>
     public partial class RealVisualMap : UserControl
     {
-        public ObservableCollection<Point> OriginalPoints = new ObservableCollection<Point>();
+        public ObservableCollection<MapPoint> OriginalPoints = new ObservableCollection<MapPoint>();
         private PlaceXmlModel.Item examItem;
         private Point defualtCenterPoint = new Point();
         double _minX = double.MaxValue;
@@ -44,7 +44,7 @@ namespace D3Demo
 
         public void GenerateItem(IExamItemGenerator itemGenerator)
         {
-            examItem = itemGenerator.Generate(OriginalPoints);
+            examItem = itemGenerator.Generate(OriginalPoints.Select(mp=> new Point(mp.X,mp.Y)));
             foreach (var area in examItem.SubAreas.Areas)
             {
                 DrawArea(Plot1,Brushes.Blue, ConvertPointsCollection(area.Points));              
@@ -80,6 +80,22 @@ namespace D3Demo
             Chart1.PlotWidth = Chart1.ActualWidth / Chart1.ActualHeight * Chart1.PlotHeight;
         }
 
+        public void RemoveAllPointFromPlot()
+        {
+            OriginalPoints.Clear();
+            int count = Plot1.Children.Count;
+            Plot1.Children.RemoveRange(2, count);//剩下坐标TextBlock和MouseNavigation其他全部删除
+        }
+
+        private void RemovePointIndex()
+        {           
+            foreach (var p in OriginalPoints)
+            {
+                //p.IndexTb.Visibility = Visibility.Collapsed;
+                p.IndexTb.Text = "";
+            }
+        }
+
         private void Chart1_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var chart = sender as Chart;
@@ -98,12 +114,12 @@ namespace D3Demo
         {
             if (e.NewItems != null)
             {
-                FitPlot((Point)e.NewItems[0]);
-                DrawMapPoints(Plot1, (Point)e.NewItems[0]);
+                FitPlot((MapPoint)e.NewItems[0]);
+                DrawMapPoints(Plot1, (MapPoint)e.NewItems[0]);
             }           
         }
 
-        private void FitPlot(Point newPoint)
+        private void FitPlot(MapPoint newPoint)
         {
             double maxX = Math.Max(_maxX, newPoint.X);
             double minX = Math.Min(_minX, newPoint.X);
@@ -164,7 +180,7 @@ namespace D3Demo
         {
             Polygon polygon = new Polygon();
             PointCollection pc = new PointCollection();
-            List<MapPoint> mps = new List<MapPoint>();
+            //List<MapPoint> mps = new List<MapPoint>();
 
             foreach (var p in points)
             {
@@ -184,24 +200,89 @@ namespace D3Demo
             //DrawMapPoints(canva, points);
         }
 
-        private void DrawMapPoints(PlotBase canva, params Point[] points)
+        private void DrawMapPoints(PlotBase canva, params MapPoint[] points)
         {
             double pointR = 15;
             int i = 1;
             int count = points.Length;
             foreach (var p in points)
             {
-                MapPoint mp = new MapPoint(p.X, p.Y, pointR);
-                canva.Children.Add(mp.Shape);
+                //MapPoint mp = new MapPoint(p.X, p.Y, pointR);
+                canva.Children.Add(p.Shape);
 
-                TextBlock num = new TextBlock();
-                num.FontSize = 20;
-                num.Text = (OriginalPoints.Count - count + i).ToString();
+                
+                p.IndexTb.Text = (OriginalPoints.Count - count + i).ToString();
                 i++;
-                Plot.SetX1(num,p.X);
-                Plot.SetY1(num,p.Y);
-                canva.Children.Add(num);
+                Plot.SetX1(p.IndexTb, p.X);
+                Plot.SetY1(p.IndexTb, p.Y);
+                canva.Children.Add(p.IndexTb);
             }
+        }
+
+        public List<MapPoint> reorderTmpPoints;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (orderPointsBtn.Content.ToString() == "调整点序")
+            {
+                foreach (var p in OriginalPoints)
+                {
+                    p.Shape.MouseDown -= Point_MouseDown;
+                    p.Shape.MouseDown += Point_MouseDown;                  
+                }
+                RemovePointIndex();
+                //selectedCount = 0;
+                reorderTmpPoints = new List<MapPoint>();
+                orderPointsBtn.Content = "取消";
+            }
+            else
+            {
+                orderPointsBtn.Content = "调整点序";
+                int i = 1;
+                foreach (var mp in OriginalPoints)
+                {
+                    mp.IndexTb.Text = i.ToString();
+                    i++;
+                }
+            }
+
+        }
+
+        private void P_MouseEnter(object sender, MouseEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        //int selectedCount;
+
+        private void Point_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var p = sender as Ellipse;
+            int selectedMpIndex = OriginalPoints.IndexOf(OriginalPoints.First(mp => mp.Shape == p));
+            
+            if (reorderTmpPoints.Contains(OriginalPoints[selectedMpIndex]))
+            {
+                return;
+            }
+            reorderTmpPoints.Add(OriginalPoints[selectedMpIndex]);
+            OriginalPoints[selectedMpIndex].IndexTb.Text = reorderTmpPoints.Count.ToString();
+            if (reorderTmpPoints.Count == OriginalPoints.Count)
+            {
+                MessageBox.Show("点序调整完毕！");
+                RemoveAllPointFromPlot();
+                foreach (var mp in reorderTmpPoints)
+                {
+                    OriginalPoints.Add(mp);
+                }
+                orderPointsBtn.Content = "调整点序";
+            }
+        }
+
+        private void SwichPoint(ObservableCollection<MapPoint> points,int source,int destination)
+        {
+            var tmp = points[destination];
+            points[destination] = points[source];
+            points[source] = tmp;
         }
     }
 }
