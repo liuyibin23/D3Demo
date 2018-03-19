@@ -10,6 +10,7 @@
     <Window.Resources>
         <local:DKExamItemGenerator x:Key="DKGenerator"/>
         <local:QXExamItemGenerator x:Key="QXGenerator"/>
+        <local:CFExamItemGenerator x:Key="CFGenerator"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,6 +22,7 @@
             <Button x:Name="btn_LoadPoint" Height="30" Width="100" Margin="20" Click="Btn_LoadPoint_OnClick">加载点</Button>
             <Button x:Name="btn_GeneratDK" Height="30" Width="100" Margin="20" Tag="{StaticResource DKGenerator}" Click="Btn_Generat_OnClick">生成倒库项目</Button>
             <Button x:Name="btn_GeneratQX" Height="30" Width="100" Margin="20" Tag="{StaticResource QXGenerator}" Click="Btn_Generat_OnClick">生成曲线项目</Button>
+            <Button x:Name="btn_GeneratCF" Height="30" Width="100" Margin="20" Tag="{StaticResource CFGenerator}" Click="Btn_Generat_OnClick">生成侧方项目</Button>
         </StackPanel>
 <!--        <d3:Chart Grid.Column="1" x:Name="Chart2">-->
 <!--            <Grid>-->

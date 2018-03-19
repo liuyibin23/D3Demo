@@ -49,6 +49,7 @@ namespace D3Demo
             {
                 DrawArea(Plot1,Brushes.Blue, ConvertPointsCollection(area.Points));              
             }
+            DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(examItem.Area.Points));
         }
 
         public void ExportMap()
