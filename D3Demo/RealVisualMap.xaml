@@ -12,7 +12,7 @@
             <Grid>
                 <d3:Plot x:Name="Plot1">
                     <d3:MouseNavigation Height="{Binding ElementName=Plot1,Path=ActualHeight}" Width="{Binding ElementName=Plot1, Path=ActualWidth}"/>
-                    <TextBlock x:Name="coordinateTB" FontSize="20">0,0</TextBlock>
+                    <TextBlock x:Name="coordinateTB" FontSize="20" Margin="10">0,0</TextBlock>
                 </d3:Plot>
                 <Button x:Name="orderPointsBtn" Height="35" Width="80" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Click="Button_Click">调整点序</Button>
             </Grid>
