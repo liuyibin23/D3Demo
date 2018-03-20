@@ -27,6 +27,7 @@
             <Button x:Name="btn_GeneratCF" Height="30" Width="100" Margin="20" Tag="{StaticResource CFGenerator}" Click="Btn_Generat_OnClick">生成侧方项目</Button>
             <Button x:Name="btn_GeneratPD" Height="30" Width="100" Margin="20" Tag="{StaticResource PDGenerator}" Click="Btn_Generat_OnClick">生成坡道项目</Button>
             <Button x:Name="btn_GeneratZJ" Height="30" Width="100" Margin="20" Tag="{StaticResource ZJGenerator}" Click="Btn_Generat_OnClick">生成直角项目</Button>
+            <Button x:Name="btn_LoadMap" Height="30" Width="100" Margin="20" Click="Btn_LoadMap_OnClick">预览地图</Button>
         </StackPanel>
 <!--        <d3:Chart Grid.Column="1" x:Name="Chart2">-->
 <!--            <Grid>-->

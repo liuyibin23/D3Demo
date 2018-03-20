@@ -176,15 +176,15 @@ namespace D3Demo
         //{
 
         //}
-        private string _pointPath;
+        
         private void Btn_LoadPoint_OnClick(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             var r = ofd.ShowDialog();
             if (r != null && r == true)
             {
-                _pointPath = ofd.FileName;
-                LoadPoint(_pointPath);
+                string pointPath = ofd.FileName;
+                LoadPoint(pointPath);
             }
         }
 
@@ -227,6 +227,28 @@ namespace D3Demo
             RealVisualMap1.GenerateItem(generator);
             RealVisualMap1.ExportMap();
             MessageBox.Show("生成的地图文件保存在程序根目录下，目前还需要手动修改项目Flag,区域Flag,和开始区域！目前一次只能生成一个项目，生成当前项目会覆盖上一个项目，请及时另存为当前生成项目文件。");
+        }
+
+        private void Btn_LoadMap_OnClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            var r = ofd.ShowDialog();
+            if (r != null && r == true)
+            {
+                string pointPath = ofd.FileName;
+                
+            }
+        }
+
+        private void LoadMap(string path)
+        {
+            if (File.Exists(path))
+            {
+                using (StreamReader sr = File.OpenText(path))
+                {
+                    
+                }
+            }
         }
     }
 }
