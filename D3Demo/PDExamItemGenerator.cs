@@ -17,8 +17,8 @@ namespace D3Demo
         /// </summary>
         private List<Point> mainAreaPoints;
 
-        private double area24OffsetDis = 0.5;
-        private double area5OffsetDis = 0.3;
+        private double area24OffsetDis = 0.5;//2,4号区偏移距离
+        private double area5OffsetDis = 0.3;//5号区偏移距离
         private double area0OffsetDis = 2;
         private double area6OffsetDis = 0.3;
         private double area7OffsetDis = 2;
@@ -47,10 +47,6 @@ namespace D3Demo
             offsetPointsTmp = MathEx.TranslatePoints(new List<Point> { areasPoints[3][0], areasPoints[3][1] }, area24OffsetDis);
             areasPoints[4] = new List<Point> { offsetPointsTmp[0], offsetPointsTmp[1], areasPoints[3][1], areasPoints[3][0] };
 
-            //0号区
-            offsetPointsTmp = MathEx.TranslatePoints(new List<Point> { originalPoints.ElementAt(5), originalPoints.ElementAt(0) }, area0OffsetDis);
-            areasPoints[0] = new List<Point> { originalPoints.ElementAt(0), originalPoints.ElementAt(5), offsetPointsTmp[0], offsetPointsTmp[1] };
-
             //1号区
             offsetPointsTmp = MathEx.TranslatePoints(new List<Point> { originalPoints.ElementAt(5), originalPoints.ElementAt(4) }, area5OffsetDis);
             areasPoints[1] = new List<Point> { areasPoints[2][3], areasPoints[2][2], offsetPointsTmp[0], originalPoints.ElementAt(0) };
@@ -62,6 +58,10 @@ namespace D3Demo
             //6号区
             offsetPointsTmp = MathEx.TranslatePoints(new List<Point> { areasPoints[5][1], areasPoints[5][2] }, area6OffsetDis);
             areasPoints[6] = new List<Point> { areasPoints[5][1], offsetPointsTmp[0], offsetPointsTmp[1], areasPoints[5][2] };
+
+            //0号区
+            offsetPointsTmp = MathEx.TranslatePoints(new List<Point> { areasPoints[6][2], originalPoints.ElementAt(0) }, area0OffsetDis);
+            areasPoints[0] = new List<Point> { originalPoints.ElementAt(0), areasPoints[6][2], offsetPointsTmp[0], offsetPointsTmp[1] };
 
             //7号区
             offsetPointsTmp = MathEx.TranslatePoints(new List<Point> { areasPoints[4][0], areasPoints[5][1] }, area7OffsetDis);

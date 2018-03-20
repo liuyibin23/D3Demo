@@ -87,6 +87,7 @@
     <Compile Include="RealVisualMap.xaml.cs">
       <DependentUpon>RealVisualMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ZJExamItemGenerator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
