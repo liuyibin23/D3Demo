@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 using InteractiveDataDisplay.WPF;
 using Microsoft.Win32;
 
@@ -195,7 +196,7 @@ namespace D3Demo
             if (File.Exists(path))
             {
                 originPoints.Clear();
-                RealVisualMap1.RemoveAllPointFromPlot();
+                RealVisualMap1.ClearPlot();
                 using (StreamReader sr = new StreamReader(path))
                 {
                     string str;
@@ -236,7 +237,7 @@ namespace D3Demo
             if (r != null && r == true)
             {
                 string pointPath = ofd.FileName;
-                
+                LoadMap(pointPath);
             }
         }
 
@@ -246,7 +247,10 @@ namespace D3Demo
             {
                 using (StreamReader sr = File.OpenText(path))
                 {
-                    
+                    RealVisualMap1.ClearPlot();
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(PlaceXmlModel));
+                    var place = xmlSerializer.Deserialize(sr) as PlaceXmlModel;
+                    RealVisualMap1.DrawMap(place);
                 }
             }
         }

@@ -45,11 +45,12 @@ namespace D3Demo
         public void GenerateItem(IExamItemGenerator itemGenerator)
         {
             examItem = itemGenerator.Generate(OriginalPoints.Select(mp=> new Point(mp.X,mp.Y)));
-            foreach (var area in examItem.SubAreas.Areas)
-            {
-                DrawArea(Plot1,Brushes.Blue, ConvertPointsCollection(area.Points));              
-            }
-            DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(examItem.Area.Points));
+            DrawItem(examItem);
+            //foreach (var area in examItem.SubAreas.Areas)
+            //{
+            //    DrawArea(Plot1,Brushes.Blue, ConvertPointsCollection(area.Points));              
+            //}
+            //DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(examItem.Area.Points));
         }
 
         public void ExportMap()
@@ -75,17 +76,39 @@ namespace D3Demo
 
         }
 
+        /// <summary>
+        /// 保持x轴和y轴的比例正确
+        /// </summary>
         public void AdjustAxis()
         {
 //            FitPlot();
             Chart1.PlotWidth = Chart1.ActualWidth / Chart1.ActualHeight * Chart1.PlotHeight;
         }
 
-        public void RemoveAllPointFromPlot()
+        public void ClearPlot()
         {
             OriginalPoints.Clear();
             int count = Plot1.Children.Count;
             Plot1.Children.RemoveRange(2, count);//剩下坐标TextBlock和MouseNavigation其他全部删除
+        }
+
+        public void DrawMap(PlaceXmlModel place)
+        {
+            foreach(var item in place.Items)
+            {
+                DrawItem(item);
+            }
+            FitMap(place);
+            AdjustAxis();
+        }
+
+        private void DrawItem(PlaceXmlModel.Item examItem)
+        {
+            DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(examItem.Area.Points));
+            foreach (var area in examItem.SubAreas.Areas)
+            {
+                DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(area.Points));
+            }           
         }
 
         private void RemovePointIndex()
@@ -165,6 +188,29 @@ namespace D3Demo
             Chart1.PlotWidth = this.Width / this.Height * height;           
         }
 
+        private void FitMap(PlaceXmlModel place)
+        {
+            if(place.Items?.Count > 0)
+            {
+                double _minX = double.MaxValue;
+                double _maxX = double.MinValue;
+                double _minY = double.MaxValue;
+                double _maxY = double.MinValue;
+                foreach (var p in place.Items[0].Area?.Points)
+                {
+                    _maxX = Math.Max(_maxX, double.Parse(p.X));
+                    _minX = Math.Min(_minX, double.Parse(p.X));
+                    _maxY = Math.Max(_maxY, double.Parse(p.Y));
+                    _minY = Math.Min(_minY, double.Parse(p.Y));
+                }
+                Chart1.PlotOriginX = Math.Round(_minX) - 1;
+                Chart1.PlotOriginY = Math.Round(_minY) - 1;
+                double height = _maxY - _minY + 8;
+                Chart1.PlotHeight = height;
+                Chart1.PlotWidth = this.Width / this.Height * height;
+            }
+        }
+
         private Point[] ConvertPointsCollection(IEnumerable<PlaceXmlModel.Point> Placepoints)
         {
             Point[] points = new Point[Placepoints.Count()];
@@ -193,17 +239,85 @@ namespace D3Demo
 
             polygon.Stroke = color;
             polygon.StrokeThickness = 2;
+            polygon.Fill = Brushes.Transparent;
 
-
+            polygon.MouseDown += Polygon_MouseDown;
 
             Plot.SetPoints(polygon, pc);
             canva.Children.Add(polygon);
+            
             //DrawMapPoints(canva, points);
         }
 
+        Polygon lastSelectedPolygon;
+        MapPoint[] lastSelectedMapPoints;
+        private void Polygon_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if(lastSelectedPolygon != null)
+            {
+                lastSelectedPolygon.Stroke = Brushes.Blue;
+                lastSelectedPolygon.StrokeThickness = 2;
+            }         
+
+            Polygon polygon = sender as Polygon;
+            var ps = polygon.Points;
+            polygon.Stroke = Brushes.Red;
+            polygon.StrokeThickness = 3;
+
+            RemoveMapPoints(lastSelectedMapPoints);
+            MapPoint[] mps = new MapPoint[ps.Count];
+
+            int i = 0;
+            foreach(var p in ps)
+            {
+                double x = Plot1.XFromLeft(p.X);
+                double y = Plot1.YFromTop(p.Y);
+                mps[i] = new MapPoint(x, y);
+                DrawPoint(Plot1,mps[i],i+1);
+                i++;
+            }
+
+            //DrawMapPoints(Plot1, mps);
+            lastSelectedPolygon = polygon;
+            lastSelectedMapPoints = mps;
+            //MessageBox.Show("Polygon_MouseDown");
+        }
+
+        private void RemoveMapPoints(MapPoint[] mps)
+        {
+            if (mps == null) return;
+            foreach (var mp in mps)
+            {
+                if (Plot1.Children.Contains(mp.Shape))
+                {
+                    Plot1.Children.Remove(mp.Shape);
+                }
+                if (Plot1.Children.Contains(mp.IndexTb))
+                {
+                    Plot1.Children.Remove(mp.IndexTb);
+                }
+            }
+        }
+
+
+        private void DrawPoint(PlotBase canva, MapPoint point,int pointIndex)
+        {
+            //double pointR = 15;
+            canva.Children.Add(point.Shape);
+            point.IndexTb.Text = pointIndex.ToString();
+            Plot.SetX1(point.IndexTb, point.X);
+            Plot.SetY1(point.IndexTb, point.Y);
+            canva.Children.Add(point.IndexTb);
+        }
+
+        /// <summary>
+        /// 画原始点
+        /// </summary>
+        /// <param name="canva"></param>
+        /// <param name="points"></param>
         private void DrawMapPoints(PlotBase canva, params MapPoint[] points)
         {
-            double pointR = 15;
+            //double pointR = 15;
             int i = 1;
             int count = points.Length;
             foreach (var p in points)
@@ -245,6 +359,10 @@ namespace D3Demo
                     mp.IndexTb.Text = i.ToString();
                     i++;
                 }
+                foreach (var p in OriginalPoints)
+                {
+                    p.Shape.MouseDown -= Point_MouseDown;
+                }
             }
 
         }
@@ -270,10 +388,14 @@ namespace D3Demo
             if (reorderTmpPoints.Count == OriginalPoints.Count)
             {
                 MessageBox.Show("点序调整完毕！");
-                RemoveAllPointFromPlot();
+                ClearPlot();
                 foreach (var mp in reorderTmpPoints)
                 {
                     OriginalPoints.Add(mp);
+                }
+                foreach (var op in OriginalPoints)
+                {
+                    op.Shape.MouseDown -= Point_MouseDown;
                 }
                 orderPointsBtn.Content = "调整点序";
             }
