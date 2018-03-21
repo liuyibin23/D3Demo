@@ -104,10 +104,13 @@ namespace D3Demo
 
         private void DrawItem(PlaceXmlModel.Item examItem)
         {
-            DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(examItem.Area.Points));
+            var polygonMainArea = DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(examItem.Area.Points));
+            DrawText(Plot1,examItem.Flag, double.Parse(examItem.Area.Points[0].X), double.Parse(examItem.Area.Points[0].Y));
+            polygonMainArea.Tag = examItem.Area;
             foreach (var area in examItem.SubAreas.Areas)
             {
-                DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(area.Points));
+                var polygonArea = DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(area.Points));
+                polygonArea.Tag = area;
             }           
         }
 
@@ -223,7 +226,7 @@ namespace D3Demo
             return points;
         }
 
-        private void DrawArea(PlotBase canva, Brush color, params Point[] points)
+        private Polygon DrawArea(PlotBase canva, Brush color, params Point[] points)
         {
             Polygon polygon = new Polygon();
             PointCollection pc = new PointCollection();
@@ -247,10 +250,12 @@ namespace D3Demo
             canva.Children.Add(polygon);
             
             //DrawMapPoints(canva, points);
+            return polygon;
         }
 
         Polygon lastSelectedPolygon;
         MapPoint[] lastSelectedMapPoints;
+        private bool isAreaSelected;//是否有区域被选中
         private void Polygon_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if(lastSelectedPolygon != null)
@@ -268,19 +273,42 @@ namespace D3Demo
             MapPoint[] mps = new MapPoint[ps.Count];
 
             int i = 0;
-            foreach(var p in ps)
+            //foreach(var p in ps)
+            //{
+            //    double x = Plot1.XFromLeft(p.X);
+            //    double y = Plot1.YFromTop(p.Y);
+            //    mps[i] = new MapPoint(x, y);
+            //    DrawPoint(Plot1,mps[i],i+1);
+            //    i++;
+            //}
+
+            var area = polygon.Tag as PlaceXmlModel.Area;
+            foreach (var p in area.Points)
             {
-                double x = Plot1.XFromLeft(p.X);
-                double y = Plot1.YFromTop(p.Y);
-                mps[i] = new MapPoint(x, y);
-                DrawPoint(Plot1,mps[i],i+1);
+                mps[i] = new MapPoint(double.Parse(p.X), double.Parse(p.Y));
+                DrawPoint(Plot1, mps[i], i + 1);
                 i++;
             }
+
 
             //DrawMapPoints(Plot1, mps);
             lastSelectedPolygon = polygon;
             lastSelectedMapPoints = mps;
+            isAreaSelected = true;
             //MessageBox.Show("Polygon_MouseDown");
+        }
+
+        private void Plot1_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (isAreaSelected)
+            {
+                if (lastSelectedPolygon != null)
+                {
+                    lastSelectedPolygon.Stroke = Brushes.Blue;
+                    lastSelectedPolygon.StrokeThickness = 2;
+                }
+                RemoveMapPoints(lastSelectedMapPoints);
+            }
         }
 
         private void RemoveMapPoints(MapPoint[] mps)
@@ -332,6 +360,15 @@ namespace D3Demo
                 Plot.SetY1(p.IndexTb, p.Y);
                 canva.Children.Add(p.IndexTb);
             }
+        }
+
+        private void DrawText(PlotBase canva, string text, double x, double y)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = text;
+            Plot.SetX1(tb, x);
+            Plot.SetY1(tb, y);
+            canva.Children.Add(tb);
         }
 
         public List<MapPoint> reorderTmpPoints;
@@ -401,11 +438,6 @@ namespace D3Demo
             }
         }
 
-        private void SwichPoint(ObservableCollection<MapPoint> points,int source,int destination)
-        {
-            var tmp = points[destination];
-            points[destination] = points[source];
-            points[source] = tmp;
-        }
+        
     }
 }

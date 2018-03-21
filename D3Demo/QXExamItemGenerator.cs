@@ -218,7 +218,7 @@ namespace D3Demo
             }
             AddPoint2Area(area, area0BelowffsetPoints[0]);
 
-            area.Flag = "2010100";
+            area.Flag = "2060100";
             area.Note = "main";
             return area;
         }

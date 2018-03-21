@@ -10,8 +10,8 @@
     <Grid>
         <d3:Chart x:Name="Chart1">
             <Grid>
-                <d3:Plot x:Name="Plot1">
-                    <d3:MouseNavigation Height="{Binding ElementName=Plot1,Path=ActualHeight}" Width="{Binding ElementName=Plot1, Path=ActualWidth}"/>
+                <d3:Plot x:Name="Plot1" >
+                    <d3:MouseNavigation Height="{Binding ElementName=Plot1,Path=ActualHeight}" Width="{Binding ElementName=Plot1, Path=ActualWidth}" MouseDown="Plot1_OnMouseDown"/>
                     <TextBlock x:Name="coordinateTB" FontSize="20" Margin="10">0,0</TextBlock>
                     <!--<Line d3:Plot.X1="-1" d3:Plot.Y1="0" d3:Plot.X2="1" d3:Plot.Y2="0" Stroke="Green" StrokeThickness="2"/>
                 <Ellipse d3:Plot.X1="-0.8" d3:Plot.Y1="0.5" d3:Plot.X2="-0.3" d3:Plot.Y2="1.0" Stroke="Gold" StrokeThickness="2"/>
