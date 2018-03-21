@@ -105,7 +105,7 @@ namespace D3Demo
         private void DrawItem(PlaceXmlModel.Item examItem)
         {
             var polygonMainArea = DrawArea(Plot1, Brushes.Blue, ConvertPointsCollection(examItem.Area.Points));
-            DrawText(Plot1,examItem.Flag, double.Parse(examItem.Area.Points[0].X), double.Parse(examItem.Area.Points[0].Y));
+            DrawText(Plot1,examItem.Flag, double.Parse(examItem.Area.Points[examItem.Area.Points.Count - 1].X), double.Parse(examItem.Area.Points[examItem.Area.Points.Count -1].Y));
             polygonMainArea.Tag = examItem.Area;
             foreach (var area in examItem.SubAreas.Areas)
             {
@@ -255,6 +255,7 @@ namespace D3Demo
 
         Polygon lastSelectedPolygon;
         MapPoint[] lastSelectedMapPoints;
+        private TextBlock lastSelectedAreaFlagTb;
         private bool isAreaSelected;//是否有区域被选中
         private void Polygon_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -262,14 +263,19 @@ namespace D3Demo
             {
                 lastSelectedPolygon.Stroke = Brushes.Blue;
                 lastSelectedPolygon.StrokeThickness = 2;
-            }         
+            }
+            if (lastSelectedAreaFlagTb != null)
+            {
+                Plot1.Children.Remove(lastSelectedAreaFlagTb);
+            }
+            RemoveMapPoints(lastSelectedMapPoints);
 
             Polygon polygon = sender as Polygon;
             var ps = polygon.Points;
             polygon.Stroke = Brushes.Red;
             polygon.StrokeThickness = 3;
 
-            RemoveMapPoints(lastSelectedMapPoints);
+            
             MapPoint[] mps = new MapPoint[ps.Count];
 
             int i = 0;
@@ -290,6 +296,7 @@ namespace D3Demo
                 i++;
             }
 
+            lastSelectedAreaFlagTb = DrawText(Plot1, area.Flag, double.Parse(area.Points[0].X), double.Parse(area.Points[0].Y));
 
             //DrawMapPoints(Plot1, mps);
             lastSelectedPolygon = polygon;
@@ -308,6 +315,10 @@ namespace D3Demo
                     lastSelectedPolygon.StrokeThickness = 2;
                 }
                 RemoveMapPoints(lastSelectedMapPoints);
+                if (lastSelectedAreaFlagTb != null)
+                {
+                    Plot1.Children.Remove(lastSelectedAreaFlagTb);
+                }
             }
         }
 
@@ -362,13 +373,14 @@ namespace D3Demo
             }
         }
 
-        private void DrawText(PlotBase canva, string text, double x, double y)
+        private TextBlock DrawText(PlotBase canva, string text, double x, double y)
         {
             TextBlock tb = new TextBlock();
             tb.Text = text;
             Plot.SetX1(tb, x);
             Plot.SetY1(tb, y);
             canva.Children.Add(tb);
+            return tb;
         }
 
         public List<MapPoint> reorderTmpPoints;
