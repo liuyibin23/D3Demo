@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace D3Demo
+namespace D3Demo.MapUtils.Model
 {
     [XmlRoot("PlaceItems")]
     public class PlaceXmlModel

@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
         xmlns:local="clr-namespace:D3Demo"
+        xmlns:itemGenerator="clr-namespace:D3Demo.MapUtils.ItemGenerator"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1000" WindowState="Maximized">
     <Window.Resources>
-        <local:DKExamItemGenerator x:Key="DKGenerator"/>
-        <local:QXExamItemGenerator x:Key="QXGenerator"/>
-        <local:CFExamItemGenerator x:Key="CFGenerator"/>
-        <local:PDExamItemGenerator x:Key="PDGenerator"/>
-        <local:ZJExamItemGenerator x:Key="ZJGenerator"/>
+        <itemGenerator:DKExamItemGenerator x:Key="DKGenerator"/>
+        <itemGenerator:QXExamItemGenerator x:Key="QXGenerator"/>
+        <itemGenerator:CFExamItemGenerator x:Key="CFGenerator"/>
+        <itemGenerator:PDExamItemGenerator x:Key="PDGenerator"/>
+        <itemGenerator:ZJExamItemGenerator x:Key="ZJGenerator"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

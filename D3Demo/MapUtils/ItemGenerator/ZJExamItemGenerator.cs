@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using D3Demo.MapUtils.Model;
 
-namespace D3Demo
+namespace D3Demo.MapUtils.ItemGenerator
 {
     public class ZJExamItemGenerator:IExamItemGenerator
     {
+        /// <summary>
         /// 表示0 - 4号区域的点集
         /// </summary>
         private List<Point>[] areasPoints = new List<Point>[5];

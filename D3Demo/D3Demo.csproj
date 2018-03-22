@@ -77,17 +77,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CFExamItemGenerator.cs" />
-    <Compile Include="DKExamItemGenerator.cs" />
-    <Compile Include="IExamItemGenerator.cs" />
+    <Compile Include="MapUtils\ItemFormat\DKExamItemFormator.cs" />
+    <Compile Include="MapUtils\ItemFormat\IExamItemFormator.cs" />
+    <Compile Include="MapUtils\ItemGenerator\CFExamItemGenerator.cs" />
+    <Compile Include="MapUtils\ItemGenerator\DKExamItemGenerator.cs" />
+    <Compile Include="MapUtils\ItemGenerator\IExamItemGenerator.cs" />
     <Compile Include="MathEx.cs" />
-    <Compile Include="PDExamItemGenerator.cs" />
-    <Compile Include="PlaceXmlModel.cs" />
-    <Compile Include="QXExamItemGenerator.cs" />
+    <Compile Include="MapUtils\ItemGenerator\PDExamItemGenerator.cs" />
+    <Compile Include="MapUtils\Model\PlaceXmlModel.cs" />
+    <Compile Include="MapUtils\ItemGenerator\QXExamItemGenerator.cs" />
     <Compile Include="RealVisualMap.xaml.cs">
       <DependentUpon>RealVisualMap.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ZJExamItemGenerator.cs" />
+    <Compile Include="MapUtils\ItemGenerator\ZJExamItemGenerator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,7 +108,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MapPoint.cs" />
+    <Compile Include="MapUtils\Model\MapPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -133,5 +135,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

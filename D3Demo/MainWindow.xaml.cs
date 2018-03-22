@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using D3Demo.MapUtils.ItemGenerator;
+using D3Demo.MapUtils.Model;
 using InteractiveDataDisplay.WPF;
 using Microsoft.Win32;
 

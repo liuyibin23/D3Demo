@@ -16,6 +16,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Serialization;
+using D3Demo.MapUtils.ItemGenerator;
+using D3Demo.MapUtils.Model;
 using InteractiveDataDisplay.WPF;
 
 namespace D3Demo
@@ -206,9 +208,9 @@ namespace D3Demo
                     _maxY = Math.Max(_maxY, double.Parse(p.Y));
                     _minY = Math.Min(_minY, double.Parse(p.Y));
                 }
-                Chart1.PlotOriginX = Math.Round(_minX) - 1;
-                Chart1.PlotOriginY = Math.Round(_minY) - 1;
-                double height = _maxY - _minY + 8;
+                Chart1.PlotOriginX = Math.Round(_minX) - 20;
+                Chart1.PlotOriginY = Math.Round(_minY) - 12;
+                double height = _maxY - _minY + 36;
                 Chart1.PlotHeight = height;
                 Chart1.PlotWidth = this.Width / this.Height * height;
             }
@@ -272,8 +274,8 @@ namespace D3Demo
 
             Polygon polygon = sender as Polygon;
             var ps = polygon.Points;
-            polygon.Stroke = Brushes.Red;
-            polygon.StrokeThickness = 3;
+            polygon.Stroke = Brushes.DarkGreen;
+            polygon.StrokeThickness = 4;
 
             
             MapPoint[] mps = new MapPoint[ps.Count];
@@ -416,10 +418,6 @@ namespace D3Demo
 
         }
 
-        private void P_MouseEnter(object sender, MouseEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
         //int selectedCount;
 
