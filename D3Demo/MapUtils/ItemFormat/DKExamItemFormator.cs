@@ -22,10 +22,23 @@ namespace D3Demo.MapUtils.ItemFormat
             IEnumerable<PlaceXmlModel.Point> area01IntersectResult = item.SubAreas.Areas[0].Points.Intersect(item.SubAreas.Areas[1].Points, _pointCompare);
             IEnumerable<PlaceXmlModel.Point> area017intersectResult = area01IntersectResult.Intersect(item.SubAreas.Areas[7].Points, _pointCompare);
             PlaceXmlModel.Point area1FirstPoint = area017intersectResult.ElementAt(0);
-            IEnumerable<PlaceXmlModel.Point> area014intersectResult = area01IntersectResult.Intersect(item.SubAreas.Areas[4].Points, _pointCompare);
-            PlaceXmlModel.Point area1LastPoint = area014intersectResult.ElementAt(0);
-         
-            ReArrangeAreaPoints(item.SubAreas.Areas[1], item.SubAreas.Areas[1].Points.IndexOf(area1FirstPoint), item.SubAreas.Areas[1].Points.IndexOf(area1LastPoint));
+            IEnumerable<PlaceXmlModel.Point> area015intersectResult = area01IntersectResult.Intersect(item.SubAreas.Areas[5].Points, _pointCompare);
+            PlaceXmlModel.Point area1LastPoint = area015intersectResult.ElementAt(0);
+
+            //调整1号区点序
+            ReArrangeAreaPoints(item.SubAreas.Areas[1], FindIndexOf(item.SubAreas.Areas[1], area1FirstPoint),0 , FindIndexOf(item.SubAreas.Areas[1], area1LastPoint), item.SubAreas.Areas[1].Points.Count -1);
+
+            IEnumerable<PlaceXmlModel.Point> area34IntersectResult = item.SubAreas.Areas[3].Points.Intersect(item.SubAreas.Areas[4].Points, _pointCompare);
+            IEnumerable<PlaceXmlModel.Point> area35IntersectResult = item.SubAreas.Areas[3].Points.Intersect(item.SubAreas.Areas[5].Points, _pointCompare);
+            PlaceXmlModel.Point area3Index0Point = area35IntersectResult.ElementAt(0);
+            PlaceXmlModel.Point area3Index1Point = area34IntersectResult.ElementAt(0);            
+
+            ReArrangeAreaPoints(item.SubAreas.Areas[3], FindIndexOf(item.SubAreas.Areas[3], area3Index0Point), 0, FindIndexOf(item.SubAreas.Areas[3], area3Index1Point), 1);
+        }
+
+        private int FindIndexOf(PlaceXmlModel.Area area, PlaceXmlModel.Point point)
+        {
+            return area.Points.FindIndex( p =>  p.X == point.X && p.Y == point.Y );
         }
 
         private void AreaRepeatPointDelete(PlaceXmlModel.Area area)
@@ -66,6 +79,92 @@ namespace D3Demo.MapUtils.ItemFormat
             {
                 throw new ArgumentException("firstPointIndex和lastPointIndex不能覆盖area的所有点");
             }
+        }
+
+        private void ReArrangeAreaPoints(PlaceXmlModel.Area area, int aCurrentIndex, int aShouldIndex,
+            int bCurrentIndex, int bShouldIndex)
+        {
+            int count = area.Points.Count;
+            int maxCurrentIndex = Math.Max(aCurrentIndex, bCurrentIndex);
+            int minCurrentInex = Math.Min(aCurrentIndex,bCurrentIndex);
+            if (maxCurrentIndex - minCurrentInex == minCurrentInex + count - maxCurrentIndex)
+                throw new ArgumentException("a,b两点在数组中顺时针和逆时针距离相同，需要距离不同的两个点");
+            
+            //List<PlaceXmlModel.Point> tmpPoints = new List<PlaceXmlModel.Point>();
+            PlaceXmlModel.Point[] tmpPoints = new PlaceXmlModel.Point[count];
+            if (isOrderCorrect(aCurrentIndex,aShouldIndex,bCurrentIndex,bShouldIndex,count)) //顺序正确
+            {
+//                tmpPoints[aShouldIndex] = area.Points[aCurrentIndex];
+                var indexMap = aShouldIndex - aCurrentIndex;
+                for (int i = 0; i < area.Points.Count; i++)
+                {
+                    int shouldIndex =i + indexMap;
+                    if (shouldIndex < area.Points.Count && shouldIndex >= 0)
+                    {
+                        tmpPoints[shouldIndex] = area.Points[i];
+                    }
+                    else if(shouldIndex >= area.Points.Count)
+                    {
+                        shouldIndex = shouldIndex - area.Points.Count;
+                        tmpPoints[shouldIndex] = area.Points[i];
+                    }
+                    else
+                    {
+                        shouldIndex = shouldIndex + area.Points.Count;
+                        tmpPoints[shouldIndex] = area.Points[i];
+                    }
+                }
+
+            }
+            else
+            {
+                area.Points.Reverse();
+                aCurrentIndex = area.Points.Count - 1 - aCurrentIndex;
+                bCurrentIndex = area.Points.Count - 1 - bCurrentIndex;
+
+                var indexMap = aShouldIndex - aCurrentIndex;
+                for (int i = 0; i < area.Points.Count; i++)
+                {
+                    int shouldIndex = i + indexMap;
+                    if (shouldIndex < area.Points.Count && shouldIndex >= 0)
+                    {
+                        tmpPoints[shouldIndex] = area.Points[i];
+                    }
+                    else if (shouldIndex >= area.Points.Count)
+                    {
+                        shouldIndex = shouldIndex - area.Points.Count;
+                        tmpPoints[shouldIndex] = area.Points[i];
+                    }
+                    else
+                    {
+                        shouldIndex = shouldIndex + area.Points.Count;
+                        tmpPoints[shouldIndex] = area.Points[i];
+                    }
+                }
+            }
+
+            area.Points = tmpPoints.ToList();
+        }
+
+        private bool isOrderCorrect(int aCurrentIndex, int aShouldIndex, int bCurrentIndex, int bShouldIndex,int count)
+        {
+            int difference = bCurrentIndex - aCurrentIndex;
+            if(difference >0)
+                return aShouldIndex + difference == bShouldIndex || aShouldIndex + difference - count == bShouldIndex;
+            else
+                return aShouldIndex + difference == bShouldIndex || aShouldIndex + difference + count == bShouldIndex;
+
+
+
+
+//            if (aShouldIndex + difference == bShouldIndex || aShouldIndex + difference - count == bShouldIndex)
+//            {
+//                
+//            }
+//            else if(aShouldIndex -difference == bShouldIndex || aShouldIndex -difference + count == bShouldIndex)
+//            {
+//                
+//            }
         }
 
     }

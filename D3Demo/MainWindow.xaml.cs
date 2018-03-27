@@ -253,6 +253,8 @@ namespace D3Demo
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(PlaceXmlModel));
                     var place = xmlSerializer.Deserialize(sr) as PlaceXmlModel;
                     RealVisualMap1.DrawMap(place);
+                    RealVisualMap1.FitMap(place);
+                    RealVisualMap1.AdjustAxis();
                 }
             }
         }

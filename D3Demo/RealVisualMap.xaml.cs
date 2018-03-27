@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Serialization;
+using D3Demo.MapUtils.ItemFormat;
 using D3Demo.MapUtils.ItemGenerator;
 using D3Demo.MapUtils.Model;
 using InteractiveDataDisplay.WPF;
@@ -34,6 +35,8 @@ namespace D3Demo
         double _maxX = double.MinValue;
         double _minY = double.MaxValue;
         double _maxY = double.MinValue;
+
+        private PlaceXmlModel _place;
 
         public RealVisualMap()
         {
@@ -96,12 +99,13 @@ namespace D3Demo
 
         public void DrawMap(PlaceXmlModel place)
         {
-            foreach(var item in place.Items)
+            _place = place;
+            foreach (var item in place.Items)
             {
                 DrawItem(item);
             }
-            FitMap(place);
-            AdjustAxis();
+            //FitMap(place);
+            //AdjustAxis();
         }
 
         private void DrawItem(PlaceXmlModel.Item examItem)
@@ -193,7 +197,7 @@ namespace D3Demo
             Chart1.PlotWidth = this.Width / this.Height * height;           
         }
 
-        private void FitMap(PlaceXmlModel place)
+        public void FitMap(PlaceXmlModel place)
         {
             if(place.Items?.Count > 0)
             {
@@ -261,7 +265,28 @@ namespace D3Demo
         private bool isAreaSelected;//是否有区域被选中
         private void Polygon_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(lastSelectedPolygon != null)
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                ItemAreaSelected(sender as Polygon);
+            }
+            else if((e.ChangedButton == MouseButton.Right))
+            {
+                Polygon polygon = sender as Polygon;
+                var area = polygon.Tag as PlaceXmlModel.Area;
+                var selectedItem = _place.Items.FirstOrDefault(item => item.SubAreas.Areas.Contains(area) || item.Area == area);
+                if (selectedItem != null && selectedItem.PlaceFlag == "201")
+                {
+                    new DKExamItemFormator().Format(selectedItem);
+                    ClearPlot();
+                    DrawMap(_place);
+                }
+            }
+            
+        }
+
+        private void ItemAreaSelected(Polygon polygon)
+        {
+            if (lastSelectedPolygon != null)
             {
                 lastSelectedPolygon.Stroke = Brushes.Blue;
                 lastSelectedPolygon.StrokeThickness = 2;
@@ -272,12 +297,12 @@ namespace D3Demo
             }
             RemoveMapPoints(lastSelectedMapPoints);
 
-            Polygon polygon = sender as Polygon;
+            //Polygon polygon = sender as Polygon;
             var ps = polygon.Points;
             polygon.Stroke = Brushes.DarkGreen;
             polygon.StrokeThickness = 4;
 
-            
+
             MapPoint[] mps = new MapPoint[ps.Count];
 
             int i = 0;
@@ -297,14 +322,13 @@ namespace D3Demo
                 DrawPoint(Plot1, mps[i], i + 1);
                 i++;
             }
-
+            
             lastSelectedAreaFlagTb = DrawText(Plot1, area.Flag, double.Parse(area.Points[0].X), double.Parse(area.Points[0].Y));
 
             //DrawMapPoints(Plot1, mps);
             lastSelectedPolygon = polygon;
             lastSelectedMapPoints = mps;
             isAreaSelected = true;
-            //MessageBox.Show("Polygon_MouseDown");
         }
 
         private void Plot1_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -321,6 +345,7 @@ namespace D3Demo
                 {
                     Plot1.Children.Remove(lastSelectedAreaFlagTb);
                 }
+                isAreaSelected = false;
             }
         }
 
