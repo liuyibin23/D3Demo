@@ -95,6 +95,7 @@ namespace D3Demo
             OriginalPoints.Clear();
             int count = Plot1.Children.Count;
             Plot1.Children.RemoveRange(2, count);//剩下坐标TextBlock和MouseNavigation其他全部删除
+            selectedAppendedpPolygon = null;
         }
 
         public void DrawMap(PlaceXmlModel place)
@@ -284,6 +285,11 @@ namespace D3Demo
             
         }
 
+        /// <summary>
+        /// 附加选中区域多边形，主要用于描边视觉效果
+        /// </summary>
+        private Polygon selectedAppendedpPolygon;
+
         private void ItemAreaSelected(Polygon polygon)
         {
             if (lastSelectedPolygon != null)
@@ -302,6 +308,18 @@ namespace D3Demo
             polygon.Stroke = Brushes.DarkGreen;
             polygon.StrokeThickness = 4;
 
+            if(selectedAppendedpPolygon == null)
+            {
+                selectedAppendedpPolygon = new Polygon
+                {
+                    Stroke = Brushes.DarkGreen,
+                    StrokeThickness = 4
+                };
+                
+                Plot1.Children.Add(selectedAppendedpPolygon);
+            }
+            
+            
 
             MapPoint[] mps = new MapPoint[ps.Count];
 
@@ -314,15 +332,17 @@ namespace D3Demo
             //    DrawPoint(Plot1,mps[i],i+1);
             //    i++;
             //}
-
+            PointCollection pc = new PointCollection();
             var area = polygon.Tag as PlaceXmlModel.Area;
             foreach (var p in area.Points)
             {
                 mps[i] = new MapPoint(double.Parse(p.X), double.Parse(p.Y));
                 DrawPoint(Plot1, mps[i], i + 1);
                 i++;
+                pc.Add(new Point(double.Parse(p.X), double.Parse(p.Y)));
             }
-            
+            Plot.SetPoints(selectedAppendedpPolygon, pc);
+
             lastSelectedAreaFlagTb = DrawText(Plot1, area.Flag, double.Parse(area.Points[0].X), double.Parse(area.Points[0].Y));
 
             //DrawMapPoints(Plot1, mps);
@@ -344,6 +364,12 @@ namespace D3Demo
                 if (lastSelectedAreaFlagTb != null)
                 {
                     Plot1.Children.Remove(lastSelectedAreaFlagTb);
+                }
+
+                if (selectedAppendedpPolygon != null)
+                {                   
+                    Plot1.Children.Remove(selectedAppendedpPolygon);
+                    selectedAppendedpPolygon = null;
                 }
                 isAreaSelected = false;
             }

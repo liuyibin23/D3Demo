@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using D3Demo.MapUtils.Model;
 
 namespace D3Demo.MapUtils.ItemFormat
@@ -17,6 +18,12 @@ namespace D3Demo.MapUtils.ItemFormat
             foreach (var area in item.SubAreas.Areas)
             {
                 AreaRepeatPointDelete(area);
+            }
+
+            //如果0号区和5号区没有交点，可能是4,5号区位置打反了，交换两个区域位置
+            if (!item.SubAreas.Areas[0].Points.Intersect(item.SubAreas.Areas[5].Points, _pointCompare).Any())
+            {
+                SwichArea(item,4,5);
             }
 
             IEnumerable<PlaceXmlModel.Point> area01IntersectResult = item.SubAreas.Areas[0].Points.Intersect(item.SubAreas.Areas[1].Points, _pointCompare);
@@ -39,6 +46,18 @@ namespace D3Demo.MapUtils.ItemFormat
         private int FindIndexOf(PlaceXmlModel.Area area, PlaceXmlModel.Point point)
         {
             return area.Points.FindIndex( p =>  p.X == point.X && p.Y == point.Y );
+        }
+
+        /// <summary>
+        /// 交换指定Item的两个区域的位置（不交换Flag和Note，只交换区域点）
+        /// </summary>
+        private void SwichArea(PlaceXmlModel.Item item,int aAreaIndex,int bAreaIndex)
+        {
+            List<PlaceXmlModel.Point> tmpPoints = item.SubAreas.Areas[aAreaIndex].Points;
+
+            item.SubAreas.Areas[aAreaIndex].Points = item.SubAreas.Areas[bAreaIndex].Points;
+
+            item.SubAreas.Areas[bAreaIndex].Points = tmpPoints;
         }
 
         private void AreaRepeatPointDelete(PlaceXmlModel.Area area)
