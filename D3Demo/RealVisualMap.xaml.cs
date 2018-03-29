@@ -45,6 +45,8 @@ namespace D3Demo
             Plot1.MouseMove += Plot1OnMouseMove;
             Chart1.SizeChanged += Chart1_SizeChanged;
             FitPlot();
+
+            //            Plot1.AddHandler(UIElement.MouseDownEvent, (MouseButtonEventHandler)Plot1_OnMouseDown, true);//此种方法可以注册已经被拦截的Plot1的鼠标左键事件
         }
 
         public void GenerateItem(IExamItemGenerator itemGenerator)
