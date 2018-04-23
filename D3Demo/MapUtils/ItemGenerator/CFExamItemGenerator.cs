@@ -17,6 +17,9 @@ namespace D3Demo.MapUtils.ItemGenerator
         /// </summary>
         private List<Point> area5AboveOffsetPoints = new List<Point>();
 
+        private double area46OffsetDis = 0.3;//4,6号区偏移距离
+        private double area7OffsetDis = 0.3;//7号区偏移距离
+
         public bool CheckPointCount(int count)
         {
             return count == 10;
@@ -29,9 +32,9 @@ namespace D3Demo.MapUtils.ItemGenerator
             examItem.SubAreas = new PlaceXmlModel.SunArea();
             examItem.SubAreas.Areas = new List<PlaceXmlModel.Area>();
 
-            double offsetDis = 0.3;//4,6号区偏移距离
+//            double offsetDis = 0.3;//4,6号区偏移距离
             area46BelowOffsetPoints = MathEx.TranslatePoints(new List<Point> { originalPoints.ElementAt(4), originalPoints.ElementAt(5),
-                originalPoints.ElementAt(6), originalPoints.ElementAt(7),originalPoints.ElementAt(8)}, offsetDis);
+                originalPoints.ElementAt(6), originalPoints.ElementAt(7),originalPoints.ElementAt(8)}, area46OffsetDis);
 
 
             examItem.SubAreas.Areas.Add(GenerateArea0(originalPoints));
@@ -166,8 +169,8 @@ namespace D3Demo.MapUtils.ItemGenerator
         /// <returns></returns>
         private PlaceXmlModel.Area GenerateArea5(IEnumerable<Point> originalPoints)
         {
-            double offsetDis = 0.3;//7号区偏移距离
-            List<Point> offsetPoints = MathEx.TranslatePoints(new List<Point> { originalPoints.ElementAt(1), originalPoints.ElementAt(3) }, offsetDis);
+//            double offsetDis = 0.3;//7号区偏移距离
+            List<Point> offsetPoints = MathEx.TranslatePoints(new List<Point> { originalPoints.ElementAt(1), originalPoints.ElementAt(3) }, area7OffsetDis);
             area5AboveOffsetPoints = offsetPoints;
             PlaceXmlModel.Area area = new PlaceXmlModel.Area();
             area.Points = new List<PlaceXmlModel.Point>();

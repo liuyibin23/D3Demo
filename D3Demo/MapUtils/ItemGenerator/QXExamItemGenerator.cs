@@ -33,6 +33,11 @@ namespace D3Demo.MapUtils.ItemGenerator
         /// </summary>
         private List<Point> secondSideOriginalPoints;
 
+        private double area0OffsetDis = 2;
+        private double area2OffsetDis = 2;
+        private double area3OffsetDis = 0.3;
+        private double area4OffsetDis = 0.3;
+
         public bool CheckPointCount(int count)
         {
             return count > 30 && count % 2 == 0;
@@ -74,8 +79,8 @@ namespace D3Demo.MapUtils.ItemGenerator
         /// <returns></returns>
         private PlaceXmlModel.Area GenerateArea0(IEnumerable<Point> originalPoints)
         {
-            double offsetDis = 2;
-            List<Point> offsetPoints = MathEx.TranslatePoints(new List<Point> { originalPoints.Last(), originalPoints.ElementAt(0) }, offsetDis);
+//            double offsetDis = 2;
+            List<Point> offsetPoints = MathEx.TranslatePoints(new List<Point> { originalPoints.Last(), originalPoints.ElementAt(0) }, area0OffsetDis);
             area0BelowffsetPoints = offsetPoints;
             PlaceXmlModel.Area area = new PlaceXmlModel.Area();
             area.Points = new List<PlaceXmlModel.Point>();
@@ -118,8 +123,8 @@ namespace D3Demo.MapUtils.ItemGenerator
         /// <returns></returns>
         private PlaceXmlModel.Area GenerateArea2(IEnumerable<Point> originalPoints)
         {
-            double offsetDis = 2;
-            List<Point> offsetPoints = MathEx.TranslatePoints(new List<Point> { firstSideOriginalPoints.Last(), secondSideOriginalPoints[0] }, offsetDis);
+//            double offsetDis = 2;
+            List<Point> offsetPoints = MathEx.TranslatePoints(new List<Point> { firstSideOriginalPoints.Last(), secondSideOriginalPoints[0] }, area2OffsetDis);
             area2AboveOffsetPoints = offsetPoints;
             PlaceXmlModel.Area area = new PlaceXmlModel.Area();
             area.Points = new List<PlaceXmlModel.Point>();
@@ -143,8 +148,8 @@ namespace D3Demo.MapUtils.ItemGenerator
         /// <returns></returns>
         private PlaceXmlModel.Area GenerateArea3(IEnumerable<Point> originalPoints)
         {
-            double offsetDis = 0.3;
-            List<Point> offsetPoints = MathEx.TranslatePoints(firstSideOriginalPoints, offsetDis);
+//            double offsetDis = 0.3;
+            List<Point> offsetPoints = MathEx.TranslatePoints(firstSideOriginalPoints, area3OffsetDis);
             area3LeftOffetPoints = offsetPoints;
             PlaceXmlModel.Area area = new PlaceXmlModel.Area();
             area.Points = new List<PlaceXmlModel.Point>();
@@ -172,8 +177,8 @@ namespace D3Demo.MapUtils.ItemGenerator
         /// <returns></returns>
         private PlaceXmlModel.Area GenerateArea4(IEnumerable<Point> originalPoints)
         {
-            double offsetDis = 0.3;
-            List<Point> offsetPoints = MathEx.TranslatePoints(secondSideOriginalPoints, offsetDis);
+//            double offsetDis = 0.3;
+            List<Point> offsetPoints = MathEx.TranslatePoints(secondSideOriginalPoints, area4OffsetDis);
             area4RightOffetPoints = offsetPoints;
             PlaceXmlModel.Area area = new PlaceXmlModel.Area();
             area.Points = new List<PlaceXmlModel.Point>();
